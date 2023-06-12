@@ -13,3 +13,6 @@ pdfkit
 python-dotenv
 openpyxl
 langchain
+pypdf
+tiktoken
+openai
