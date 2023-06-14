@@ -54,16 +54,21 @@ def log_function_call(func):
     Decorator for debugging
     """
     def wrapper(*args, **kwargs):
-        file_path = inspect.getfile(func)
-        file_name = os.path.basename(file_path)
-        logging.debug('%s - %s - start function with args: %s', func.__name__, file_name, args)
-
         start_time = time.time()
-        result = func(*args, **kwargs)
-        end_time = time.time()
-        logging.debug('%s - %s - %s - end function with result: %s', func.__name__, file_name,
-                      end_time-start_time, result)
-        return result
+        try:
+            file_path = inspect.getfile(func)
+            file_name = os.path.basename(file_path)
+            logging.debug('%s - %s - start function with args: %s', func.__name__, file_name, args)
+            result = func(*args, **kwargs)
+            end_time = time.time()
+            logging.debug('%s - %s - %s - end function with result: %s', func.__name__, file_name,
+                          end_time-start_time, result)
+            return result
+        except Exception as e:
+            end_time = time.time()
+            logging.exception('%s - %s - %s - end function with Exception: %s', func.__name__, file_name,
+                              end_time-start_time, str(e))
+            raise e
     return wrapper
 
 

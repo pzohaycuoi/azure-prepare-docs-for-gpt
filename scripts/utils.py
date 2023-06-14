@@ -10,6 +10,7 @@ logger = logging.getLogger("file")
 @log_function_call
 def fix_json(stuff: str):
     text = stuff
+    text = text.replace("'", '')
     text = text.replace('\n', '')
     text = text.strip()
     str_endwith = text[-1]
@@ -22,6 +23,7 @@ def fix_json(stuff: str):
                 text = text.rstrip(str_endwith)
             else:
                 text += '"'
+        if str_endwith == ':': text.rstrip(str_endwith)
 
     # Find all brackets inside paragraph
     bracket_list = ['[', ']', '{', '}']
@@ -46,8 +48,9 @@ def fix_json(stuff: str):
             text += ']'
         if bracket == '{':
             text += '}'
-            
+    
     try:
+        logger.debug(text)
         converted_text = json.loads(text)
     except Exception as e:
         logger.error(e)

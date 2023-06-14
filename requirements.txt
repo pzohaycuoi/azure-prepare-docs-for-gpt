@@ -15,4 +15,4 @@ openpyxl
 langchain
 pypdf
 tiktoken
-openai
+retry
